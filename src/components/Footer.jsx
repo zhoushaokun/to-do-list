@@ -1,32 +1,44 @@
 import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+import Constants from "./constants";
 
 class Footer extends Component {
 	render() {
-		return (
+		const { clearCompleted, noShowing } = this.props;
+		const { todos } = this.props;
+		let num_left = 0;
+		todos.forEach( (element, index) => {
+			if (!element.completed) {
+				num_left ++;
+			}
+		});
+
+ 		return (
 			<div className="footer">
 				<span className="todo-count">
-					<strong></strong> left
+					<strong>{num_left}</strong> left
 				</span>
 				<ul className="filters">
 					<li>
-						<a>
+						<Link to="/" calssName={{selected: noShowing === Constants.ALL_TODOS }}>
 								All
-						</a>
+						</Link>
 					</li>
 					{' '}
 					<li>
-						<a>
+						<Link to="/active">
 								Active
-						</a>
+						</Link>
 					</li>
 					{' '}
 					<li>
-						<a>
+						<Link to="/completed">
 								Completed
-						</a>
+						</Link>
 					</li>
 				</ul>
 				<button
+					onClick={ clearCompleted }
 					className="clear-completed">
 					Clear completed
 				</button>

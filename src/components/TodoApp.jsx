@@ -4,6 +4,8 @@ import Main from "./Main.jsx";
 import Footer from "./Footer.jsx";
 import Constants from "./constants.js";
 
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 
 class TodoApp extends Component {
 	constructor(props) {
@@ -12,7 +14,7 @@ class TodoApp extends Component {
 	  	this.state = {
 	    	noShowing: Constants.ALL_TODOS,
 	    	editing: null,
-	    	newTode: "",
+	    	newTodo: "",
 	   	 	todos: [],
 	   	 	allCompleted: false
 		};
@@ -75,6 +77,7 @@ class TodoApp extends Component {
 		const allCompleted = !this.state.allCompleted;
 		const { todos } = this.state;
 
+		// 有待改进
 		const new_todos = todos.map( item => {
 			item.completed = allCompleted;
 			return item;
@@ -86,6 +89,7 @@ class TodoApp extends Component {
 	}
 
 	onToggle = (id) => {
+		// 有待改进
 		const todos = this.state.todos.map( todo => {
 			if (todo.id === id){
 				todo.completed = !todo.completed;
@@ -100,19 +104,38 @@ class TodoApp extends Component {
 		this.setState({todos, allCompleted});
 	}
 
+	clearCompleted = () => {
+		const todos = this.state.todos.filter( todo => {
+			return !todo.completed;
+		});
+
+		this.setState({todos});
+	}
+
 	render() {
-		const { todos, newTodo, allCompleted } = this.state;
+		const { todos, newTodo, allCompleted, noShowing } = this.state;
 		const methods = {
 			add: this.add,
 			modify: this.modify,
 			toggleAll: this.toggleAll,
 			onToggle: this.onToggle
 		};
+		const activeTodos = todos.filter( (todo) => !todo.completed );
+		const completedTodos = todos.filter( (todo) => todo.completed ); 
+		const allMain = <Main todos={ todos } methods={methods} allCompleted={allCompleted}></Main>;
+		const activeMain = <Main todos={ activeTodos } methods={methods} allCompleted={allCompleted}></Main>;
+		const completedMain = <Main todos={ completedTodos } methods={methods} allCompleted={allCompleted}></Main>;
+
+		const footer = <Footer todos={ todos } clearCompleted={ this.clearCompleted } noShowing={ noShowing }></Footer>;
 		return (
 			<div className="todoapp">
-				<Header handleChange={this.handleChange} onKeyDown={this.handleNewTodoKeyDown} value={newTodo}></Header>
-				<Main todos={ todos } methods={methods} allCompleted={allCompleted}></Main>
-				<Footer></Footer>
+				<Router>
+					<Header handleChange={this.handleChange} onKeyDown={this.handleNewTodoKeyDown} value={newTodo}></Header>
+					<Route exact path="/" render={() => allMain}></Route>
+					<Route path="/active" render={() => activeMain}></Route>
+					<Route path="/completed" render={() => completedMain}></Route>
+					{todos.length > 0 ? footer : null}
+				</Router>
 			</div>
 		);
 	}

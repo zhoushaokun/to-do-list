@@ -20,7 +20,7 @@ class Item extends Component {
 		
  		const { title, completed } = this.props.todo;
  		return (
-			<li >
+			<li className={completed ? "completed" : ""}>
 				<div className="view">
 					<input
 						refs="checkbox"

@@ -2,8 +2,14 @@ import React, { Component } from 'react';
 import Item from "./Item.jsx";
 
 class Main extends Component {
+
+	componentDidMount = () => {
+		console.log("componentDidMount")
+	}
+
 	render() {
 		const { todos , allCompleted, methods: { modify, toggleAll, onToggle }} = this.props;
+
 		return (
 			<div className="main">
 				<input 
