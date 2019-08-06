@@ -3,8 +3,11 @@ import Item from "./Item.jsx";
 
 class Main extends Component {
 
-	componentDidMount = () => {
-		console.log("componentDidMount")
+	componentWillMount = () => {
+		console.log("componentDidMount", this.props.match.path.split('/').pop());
+		const { methods: {changeNoShowing} } = this.props;
+
+		changeNoShowing(this.props.match.path.split('/').pop());
 	}
 
 	render() {
@@ -18,6 +21,7 @@ class Main extends Component {
 					type="checkbox"
 					onClick={toggleAll}
 					checked={allCompleted}
+
 				/>
 				<label htmlFor="toggle-all"></label>
 				<ul className="todo-list">

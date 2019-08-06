@@ -20,19 +20,19 @@ class Footer extends Component {
 				</span>
 				<ul className="filters">
 					<li>
-						<Link to="/" calssName={{selected: noShowing === Constants.ALL_TODOS }}>
+						<Link to="/" className={noShowing === Constants.ALL_TODOS ? "selected" : ""}>
 								All
 						</Link>
 					</li>
 					{' '}
 					<li>
-						<Link to="/active">
+						<Link to="/active" className={noShowing === Constants.ACTIVE_TODOS ? "selected" : ""} >
 								Active
 						</Link>
 					</li>
 					{' '}
 					<li>
-						<Link to="/completed">
+						<Link to="/completed" className={noShowing === Constants.COMPLETED_TODOS ? "selected" : ""}>
 								Completed
 						</Link>
 					</li>
